@@ -1,0 +1,16 @@
+name: Self-hosted
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: [self-hosted, linux, fest]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Where am I?
+        run: echo "runner=$RUNNER_NAME os=$RUNNER_OS arch=$RUNNER_ARCH host=$(hostname)"
+      - run: python3 -m venv .venv && .venv/bin/pip install -q -r requirements-dev.txt && .venv/bin/python -m pytest -q
